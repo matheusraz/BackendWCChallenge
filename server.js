@@ -3,6 +3,7 @@ const server = express();
 const bodyparser = require('body-parser');
 const port = process.env.PORT || 3000;
 const router = require('./routes/routes');
+const elastic = require('./elasticdb/elasticdb');
 
 server.use(bodyparser.json());
 server.use(bodyparser.urlencoded({extended:true}));
@@ -13,6 +14,7 @@ server.listen(port, (err) => {
     if(err) {
         console.log("Erro ao subir servidor\nlog: ", err);
     } else {
-        console.log(`Servidor escutando na porta ${port}`)
+        console.log(`Servidor escutando na porta ${port}`);
+        elastic.carga();
     }
 });

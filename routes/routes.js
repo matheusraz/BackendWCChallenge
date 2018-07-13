@@ -1,4 +1,5 @@
 const request = require('request');
+const elastic = require('../elasticdb/elasticdb');
 
 module.exports = serverRouter = (server) => {
     
@@ -9,4 +10,9 @@ module.exports = serverRouter = (server) => {
         };
         res.json(result);
     });
+
+    server.get('/teams', (req, res) => {
+        elastic.getAllContent().then((result) => {res.json(result)});
+    });
+
 };

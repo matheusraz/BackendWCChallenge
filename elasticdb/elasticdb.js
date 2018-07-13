@@ -3,7 +3,7 @@ const fs = require('fs');
 const elasticsearch = require('elasticsearch');
 
 const esClient = new elasticsearch.Client({
-  host: '127.0.0.1:9200',
+  host: '172.17.0.2:9200',
   log: 'error'
 });
   
@@ -37,7 +37,7 @@ const bulkIndex = function bulkIndex(index, type, data) {
 const carga = function carga() {
 
   const reqBody = {
-    uri: 'http://localhost:9200/wcc/teams/_search'
+    uri: 'http://172.17.0.2:9200/wcc/teams/_search'
   }
 
   request(reqBody, (req, res) =>{
@@ -46,13 +46,14 @@ const carga = function carga() {
       //const articlesRaw = fs.readFileSync('data.json');
       //const articles = JSON.parse(articlesRaw);
       const reqTeams = {
-          uri: 'https://worldcup.sfg.io/teams/'
+        method: 'GET',
+        uri: 'https://worldcup.sfg.io/teams/'
       };
       request(reqTeams, (reqTeam, resTeam) => {
-          console.log(resTeam);
+          let dados = JSON.parse(resTeam.body);
+          console.log(`${dados.length} itens parseados do arquivo de dados.`);
+          bulkIndex('wcc', 'teams', dados);
       });
-      //console.log(`${articles.length} itens parseados do arquivo de dados.`);
-      //bulkIndex('wcc', 'teams', articles);
     } else {
       console.log("O Banco ja possui dados carregados.")
     }

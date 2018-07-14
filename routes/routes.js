@@ -12,10 +12,32 @@ module.exports = serverRouter = (server) => {
     });
 
     server.get('/teams', (req, res) => {
-        elastic.getAllContent().then((result) => {res.json(result)});
+        elastic.getAllTeams().then((result) => {
+            let lista = []
+            result.hits.hits.forEach(element => {
+                lista.push(element._source);
+            });
+            res.json(lista);
+        });
     });
 
     server.get('/teams/:fifa_code', (req, res) => {
-        elastic.getMatchsByTeam(req.params.fifa_code).then((result) => {res.json(result)});
+        elastic.getSpecificTeam(req.params.fifa_code).then((result) => {
+            res.json(result.hits.hits[0]._source);
+        });
+    });
+
+    server.get('/matches/:team_name', (req, res) => {
+        elastic.getMatchesByTeam(req.params.team_name).then((result) => {
+            let lista = []
+            result.hits.hits.forEach(element => {
+                let moment = element._source;
+                let obj = {};
+                obj.home = moment.home_team;
+                obj.away = moment.away_team;
+                lista.push(obj);
+            });
+            res.json(lista)}
+        );
     });
 };

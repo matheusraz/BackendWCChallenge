@@ -15,6 +15,7 @@ server.listen(port, (err) => {
         console.log("Erro ao subir servidor\nlog: ", err);
     } else {
         console.log(`Servidor escutando na porta ${port}`);
-        elastic.carga();
+        elastic.cargaTeams();
+        elastic.cargaMatches();
     }
 });

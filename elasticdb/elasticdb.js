@@ -7,7 +7,7 @@ const esClient = new elasticsearch.Client({
   log: 'error'
 });
   
-const bulkIndex = function bulkIndex(index, type, data) {
+const bulkIndex = function bulkIndex(index, type, data, desc) {
   let bulkBody = [];
   data.forEach(item => {
     bulkBody.push({
@@ -29,12 +29,12 @@ const bulkIndex = function bulkIndex(index, type, data) {
         console.log(++errorCount, item.index.error);
       }
     });
-    console.log(`${data.length - errorCount} itens indexados com sucesso de ${data.length} itens`);
+    console.log(`${data.length - errorCount} itens indexados no type ${desc} com sucesso de ${data.length} itens`);
   })
  .catch(console.err);
 };
   
-const carga = function carga() {
+const cargaTeams = function cargaTeams() {
 
   const reqBody = {
     uri: 'http://172.17.0.2:9200/wcc/teams/_search'
@@ -43,8 +43,6 @@ const carga = function carga() {
   request(reqBody, (req, res) =>{
     let obj = JSON.parse(res.body);
     if(obj.hits == undefined || obj.hits.total == 0) {
-      //const articlesRaw = fs.readFileSync('data.json');
-      //const articles = JSON.parse(articlesRaw);
       const reqTeams = {
         method: 'GET',
         uri: 'https://worldcup.sfg.io/teams/'
@@ -52,17 +50,43 @@ const carga = function carga() {
       request(reqTeams, (reqTeam, resTeam) => {
           let dados = JSON.parse(resTeam.body);
           console.log(`${dados.length} itens parseados do arquivo de dados.`);
-          bulkIndex('wcc', 'teams', dados);
+          bulkIndex('wcc', 'teams', dados, 'teams');
       });
     } else {
-      console.log("O Banco ja possui dados carregados.")
+      console.log("O Banco ja possui dados carregados no index [wcc] type [teams].")
     }
   });
 };
 
-exports.carga = carga;
+exports.cargaTeams = cargaTeams;
 
-const getAllContent = () => {
+const cargaMatches = function cargaMatches() {
+
+  const reqBody = {
+    uri: 'http://172.17.0.2:9200/wccmatches/matches/_search'
+  }
+
+  request(reqBody, (req, res) =>{
+    let obj = JSON.parse(res.body);
+    if(obj.hits == undefined || obj.hits.total == 0) {
+      const reqTeams = {
+        method: 'GET',
+        uri: 'https://worldcup.sfg.io/matches/'
+      };
+      request(reqTeams, (reqTeam, resTeam) => {
+          let dados = JSON.parse(resTeam.body);
+          console.log(`${dados.length} itens parseados do arquivo de dados.`);
+          bulkIndex('wccmatches', 'matches', dados, 'matches');
+      });
+    } else {
+      console.log("O Banco ja possui dados carregados no index [wccmatches] type [matches].")
+    }
+  });
+};
+
+exports.cargaMatches = cargaMatches;
+
+const getAllTeams = () => {
   let body = {
     query:{
       match_all:{}
@@ -71,9 +95,9 @@ const getAllContent = () => {
   return esClient.search({index: "wcc", type: "teams", body: body});
 };
 
-exports.getAllContent = getAllContent;
+exports.getAllTeams = getAllTeams;
 
-const getMatchsByTeam = (team) => {
+const getSpecificTeam = (team) => {
   let body = {
     query:{
       query_string: {
@@ -85,4 +109,18 @@ const getMatchsByTeam = (team) => {
   return esClient.search({index: "wcc", type: "teams", body: body});
 };
 
-exports.getMatchsByTeam = getMatchsByTeam;
+exports.getSpecificTeam = getSpecificTeam;
+
+const getMatchesByTeam = (team) => {
+  let body = {
+    query:{
+      query_string: {
+        query: team,
+        fields: ["home_team_country", "away_team_country"]
+      }
+    }
+  };
+  return esClient.search({index: "wccmatches", type: "matches", body: body});
+};
+
+exports.getMatchesByTeam = getMatchesByTeam;

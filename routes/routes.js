@@ -15,4 +15,7 @@ module.exports = serverRouter = (server) => {
         elastic.getAllContent().then((result) => {res.json(result)});
     });
 
+    server.get('/teams/:fifa_code', (req, res) => {
+        elastic.getMatchsByTeam(req.params.fifa_code).then((result) => {res.json(result)});
+    });
 };

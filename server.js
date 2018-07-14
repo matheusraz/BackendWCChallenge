@@ -1,7 +1,7 @@
 const express = require('express');
 const server = express();
 const bodyparser = require('body-parser');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const router = require('./routes/routes');
 const elastic = require('./elasticdb/elasticdb');
 

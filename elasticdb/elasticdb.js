@@ -72,3 +72,17 @@ const getAllContent = () => {
 };
 
 exports.getAllContent = getAllContent;
+
+const getMatchsByTeam = (team) => {
+  let body = {
+    query:{
+      query_string: {
+        query: team,
+        fields: ["fifa_code"]
+      }
+    }
+  };
+  return esClient.search({index: "wcc", type: "teams", body: body});
+};
+
+exports.getMatchsByTeam = getMatchsByTeam;

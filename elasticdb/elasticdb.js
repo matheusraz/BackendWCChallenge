@@ -88,6 +88,7 @@ exports.cargaMatches = cargaMatches;
 
 const getAllTeams = () => {
   let body = {
+    size: 500,
     query:{
       match_all:{}
     }
@@ -99,6 +100,7 @@ exports.getAllTeams = getAllTeams;
 
 const getSpecificTeam = (team) => {
   let body = {
+    size: 500,
     query:{
       query_string: {
         query: team,
@@ -113,6 +115,7 @@ exports.getSpecificTeam = getSpecificTeam;
 
 const getMatchesByTeam = (team) => {
   let body = {
+    size: 500,
     query:{
       query_string: {
         query: team,

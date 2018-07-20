@@ -4,6 +4,7 @@ const elastic = require('../elasticdb/elasticdb');
 module.exports = serverRouter = (server) => {
     
     server.get('/', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         const result = {
             status: 200,
             message: 'Servidor funcionando 100%'
@@ -12,6 +13,7 @@ module.exports = serverRouter = (server) => {
     });
 
     server.get('/teams', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         elastic.getAllTeams().then((result) => {
             let lista = []
             result.hits.hits.forEach(element => {
@@ -22,12 +24,14 @@ module.exports = serverRouter = (server) => {
     });
 
     server.get('/teams/:fifa_code', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         elastic.getSpecificTeam(req.params.fifa_code).then((result) => {
             res.json(result.hits.hits[0]._source);
         });
     });
 
     server.get('/matches/:team_name', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         elastic.getMatchesByTeam(req.params.team_name).then((result) => {
             let lista = []
             result.hits.hits.forEach(element => {

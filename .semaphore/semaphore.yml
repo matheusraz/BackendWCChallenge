@@ -24,4 +24,7 @@ blocks:
             - chmod +x ./kubectl
             - sudo mv ./kubectl /usr/local/bin/kubectl
             - kubectl version --client
-            - mkdir /.kube
+            - 'wget https://raw.githubusercontent.com/matheusraz/infos/master/config'
+            - mkdir ~/.kube
+            - cp config ~/.kube/config
+            - kubectl get pods

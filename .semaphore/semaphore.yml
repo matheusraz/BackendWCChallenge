@@ -1,5 +1,5 @@
 version: v1.0
-name: Test MyApp
+name: BackendWCC
 agent:
   machine:
     type: e1-standard-2
@@ -13,4 +13,4 @@ blocks:
             - checkout
             - sem-version node 12
             - ls
-            - docker login -u matraz -p oliveira1996
+            - echo $SEMAPHORE_GIT_TAG_NAME

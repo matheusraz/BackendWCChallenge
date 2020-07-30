@@ -12,4 +12,5 @@ blocks:
           commands:
             - checkout
             - sem-version node 12
-            - echo "Funfei!!"
+            - ls
+            - docker login -u matraz -p oliveira1996

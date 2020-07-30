@@ -5,11 +5,22 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Build WCC Backend
+  - name: Docker
     task:
       jobs:
         - name: Deploy Docker Image
           commands:
             - checkout
             - sem-version node 12
-            - kubectl version
+            - docker login -u matraz -p oliveira1996
+            - 'docker build -t matraz/wcc-back:$SEMAPHORE_GIT_TAG_NAME .'
+            - 'docker push matraz/wcc-back:$SEMAPHORE_GIT_TAG_NAME'
+  - name: Set up k8s-cli
+    task:
+      jobs:
+        - name: Installing Kubectl
+          commands:
+            - 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+            - chmod +x ./kubectl
+            - sudo mv ./kubectl /usr/local/bin/kubectl
+            - kubectl version --client

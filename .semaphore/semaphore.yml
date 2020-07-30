@@ -13,4 +13,5 @@ blocks:
             - checkout
             - sem-version node 12
             - ls
+            - 'echo "TAG:"'
             - echo $SEMAPHORE_GIT_TAG_NAME

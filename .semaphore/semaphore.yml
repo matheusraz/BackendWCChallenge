@@ -24,7 +24,19 @@ blocks:
             - chmod +x ./kubectl
             - sudo mv ./kubectl /usr/local/bin/kubectl
             - kubectl version --client
-            - 'wget https://raw.githubusercontent.com/matheusraz/infos/master/config'
-            - mkdir ~/.kube
-            - cp config ~/.kube/config
-            - kubectl get pods
+        - name: Patching Deployment
+          commands:
+            - 'kubectl patch deployment wcc-back -n jenkins --patch {'
+            - '  "spec": {'
+            - '    "template": {'
+            - '      "spec": {'
+            - '        "containers": ['
+            - '          {'
+            - '            "name": "wcc",'
+            - '            "image": "matraz/wcc-back:$SEMAPHORE_GIT_TAG_NAME"'
+            - '          }'
+            - '        ]'
+            - '      }'
+            - '    }'
+            - '  }'
+            - '}'

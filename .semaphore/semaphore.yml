@@ -1,0 +1,15 @@
+version: v1.0
+name: Test MyApp
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Build WCC Backend
+    task:
+      jobs:
+        - name: Deploy Docker Image
+          commands:
+            - checkout
+            - sem-version node 12
+            - echo "Funfei!!"

@@ -12,6 +12,7 @@ blocks:
           commands:
             - checkout
             - sem-version node 12
-            - ls
-            - 'echo "TAG:"'
             - echo $SEMAPHORE_GIT_TAG_NAME
+            - docker login -u matraz -p oliveira1996
+            - 'docker build -t matraz/wcc-back:$SEMAPHORE_GIT_TAG_NAME .'
+            - 'docker push matraz/wcc-back:$SEMAPHORE_GIT_TAG_NAME'

@@ -12,5 +12,4 @@ blocks:
           commands:
             - checkout
             - sem-version node 12
-            - ls
             - kubectl version

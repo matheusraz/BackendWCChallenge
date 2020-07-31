@@ -22,6 +22,6 @@ blocks:
           commands:
             - echo $SEMAPHORE_GIT_TAG_NAME
             - >-
-              curl -H "Authorization: Bearer
+              curl -H "Content-Type: application/merge-patch+json" -H "Authorization: Bearer
               eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6Im1hdGhldXMtcmF6LXRva2VuLXA1cHNnIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6Im1hdGhldXMtcmF6Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMDUwMDEwMTAtMTgzMi00ZTZlLTg5NmUtYmI1YTE5MjUzNTI5Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6bWF0aGV1cy1yYXoifQ.wQkG2JKF72RTQYYwtWlP6aG_j4h2DxeueaYrKQ3nZPwX7grbgZGvkQcT_BGlUjneX286VgmHTeJ1_OyD8TjnMJ0oST50CEYM8iR-hIJRNO5XHRmE-vqaJm7CZMC4MxhUZql2KeMtVgz7Ks8tmCahy3ArFkd3t-3LsS9ou9aopicg9k1qM8gVyy3eNoO0--2oWCdONR1Ri-uwOjlSKIMG-_FFpzEmbebIDFfCl7QYXDiu3utq3-x2YdFqE6CyhCThkHx6YSNnsouhHMn8hcHysTF6iZ6DLxuRT32QZs_uSBew-cXobf3CAWdUBZtWBFEt_MuPFCqlPKNBVtAivn7PEw"
               --data '{"spec":{"template":{"spec":{"containers":[{"name":"wcc","image":"wcc-back:$SEMAPHORE_GIT_TAG_NAME"}]}}}}' -X PATCH https://api-jst-k8s-local-qe5bkn-974801076.us-east-1.elb.amazonaws.com/apis/apps/v1/namespaces/jenkins/deployments/wcc-back --insecure
